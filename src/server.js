@@ -1,20 +1,27 @@
-const express = require('express')
-require('dotenv').config()
+//Khai bao de su dung env
+require('dotenv').config();
+const express = require('express');
+const { configStaticFile, configViewEngine } = require('./config/viewEngine');
+const webRouter = require('./routes/web');
+const connection = require('./config/database');
 
-const app = express()
-const port = process.env.Port
+const app = express();
+const port = process.env.Port || 3002;
+const hostname = process.env.HOST_NAME;
 
-app.set('views', './src/views')
-app.set('view engine', 'ejs')
+configViewEngine(app);
+configStaticFile(app);
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
+//Khai báo routes
+app.use('/', webRouter)
 
-app.get('/Linh', (req, res) => {
-    res.render('sample.ejs')
-})
+connection.query(
+    'SELECT * FROM Employee',
+    function (err, results, fields) {
+        console.log(results); // results contains rows returned by server
+    }
+);
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+app.listen(port, hostname, () => {
+    console.log(`Web is run on port ${port}`)
 })
