@@ -1,5 +1,6 @@
 const { getAllPayRates } = require('../services/payRatesService');
-const { getEmployee } = require('../services/employeeService');
+const { getAllPersonnal } = require('../services/personService');
+
 
 let test= async(req,res)=>{
     res.send('hello cac me')
@@ -17,10 +18,10 @@ let findAllPayRates= async(req,res)=>{
     }
 }
 
-let findEmployee= async(req,res)=>{
+let findAllPersonal= async(req,res)=>{
     try {
         // Gọi service để lấy tất cả PayRates
-        const result = await getEmployee();
+        const result = await getAllPersonnal();
 
         // Trả về kết quả dưới dạng JSON`
         res.json(result);
@@ -29,6 +30,8 @@ let findEmployee= async(req,res)=>{
     }
 }
 
+
+
 module.exports={
-    test,findAllPayRates,findEmployee
+    test,findAllPayRates,findAllPersonal
 }

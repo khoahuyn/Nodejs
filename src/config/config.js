@@ -19,22 +19,6 @@ const config = {
       dialect: "mssql",
       logging: false
     }
-
-    // "username": process.env.SQL_NAME,
-    // "password": process.env.SQL_PASSWORD,
-    // "database": process.env.SQL_DATABASE,
-    // "host": process.env.SQL_HOST,
-    // "port": process.env.SQL_PORT,
-    // "dialect": "mysql",
-    // "logging": false
-
-    // username: process.env.DB_NAME,
-    // password: process.env.DB_PASSWORD,
-    // database: process.env.DB_DATABASE,
-    // host: process.env.DB_HOST,
-    // port: process.env.DB_PORT,
-    // dialect: "mysql",
-    // logging: false,
   },
   test: {
     username: "root",

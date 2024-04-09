@@ -3,7 +3,7 @@ const db = require('../models/index')
 async function getAllPayRates() {
     try {
         const data = await db.sequelizeMySQL.query(
-            `SELECT * From PayRates `,
+            `SELECT * From payrates `,
             {
               type: db.sequelizeMySQL.QueryTypes.SELECT,
             }
