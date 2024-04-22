@@ -1,4 +1,5 @@
 require('dotenv').config();
+
 const config = {
   development: {
     mysql: {
@@ -17,7 +18,12 @@ const config = {
       host: process.env.SQL_HOST,
       port: process.env.SQL_PORT,
       dialect: "mssql",
-      logging: false
+      logging: false,
+      dialectOptions: {
+        options: {
+          encrypt: false
+        }
+      }
     }
   },
   test: {

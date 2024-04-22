@@ -10,8 +10,6 @@ const hostname = process.env.HOST_NAME;
 //Khai báo routes
 app.use('/', apiRouter)
 
-
-
 app.listen(port, hostname, () => {
     console.log(`Web is run on port ${port}`)
 })
