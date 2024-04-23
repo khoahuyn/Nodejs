@@ -56,7 +56,7 @@ async function getListEmployee() {
                 BENEFIT_PLANS: { BENEFIT_PLANS_ID, DEDUCTABLE, PERCENTAGE_COPAY, } } = item;
             const FULLNAME = `${CURRENT_FIRST_NAME} ${CURRENT_MIDDLE_NAME || ''} ${CURRENT_LAST_NAME}`;
             return {
-                FULLNAME,
+                // FULLNAME,
                 PERSONAL_ID,
                 BENEFIT_PLANS_ID,
                 CURRENT_FIRST_NAME,
@@ -106,6 +106,18 @@ async function getListEmployee() {
     }
 }
 
+
+
+async function addNewPersonalData(data) {
+    try {
+        const newPersonal = await modelsql.PERSONAL.create(data);
+        return newPersonal || 'New personal data added successfully!';
+    } catch (error) {
+        console.error('Error adding new personal data:', error);
+        return 'Error adding new personal data.';
+    }
+}
+
 module.exports = {
-    getListEmployee
+    getListEmployee,addNewPersonalData
 };

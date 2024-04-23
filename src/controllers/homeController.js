@@ -3,7 +3,7 @@ const { getAllPersonnal } = require('../services/personService');
 const { getTotalIncome } = require('../services/totalService');
 const { getTotalVacation } = require('../services/vacationService');
 const { getTotalBenefit } = require('../services/benefitService');
-const { getListEmployee } = require('../services/employeeListService');
+const { getListEmployee, addNewPersonalData } = require('../services/employeeListService');
 
 
 
@@ -85,9 +85,23 @@ let findAll = async (req, res) => {
 }
 
 
+let addNewPersonal = async (req, res) => {
+    try {
+        const newPersonalData = req.body;
+
+        const result = await addNewPersonalData(newPersonalData);
+
+        res.json(result);
+    } catch (error) {
+        console.error('Error adding new personal data:', error);
+        res.status(500).json({ error: error.message }); 
+    }
+};
+
+
 
 
 
 module.exports = {
-    test, findAllPersonal, findAllEmplyee, findTotalIncome, findTotalVacation,findTotalBenefit,findAll
+    test, findAllPersonal, findAllEmplyee, findTotalIncome, findTotalVacation, findTotalBenefit, findAll,addNewPersonal
 }
