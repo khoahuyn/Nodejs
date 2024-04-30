@@ -1,7 +1,7 @@
 const db = require('../models/index')
 
-var initModelsMySQL = require("../models/mysql/init-models");
-var models = initModelsMySQL(db.MYSQL);
+const initModelsMySQL = require("../models/mysql/init-models");
+const models = initModelsMySQL(db.MYSQL);
 
 async function getAllEmployees() {
     try {

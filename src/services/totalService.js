@@ -1,10 +1,10 @@
 const db = require('../models/index')
 
-var initModelsMySQL = require("../models/mysql/init-models");
-var models = initModelsMySQL(db.MYSQL);
+const initModelsMySQL = require("../models/mysql/init-models");
+const models = initModelsMySQL(db.MYSQL);
 
-var initModelsSqlserver = require("../models/sqlserver/init-models");
-var modelsql = initModelsSqlserver(db.SQLSERVER);
+const initModelsSqlserver = require("../models/sqlserver/init-models");
+const modelsql = initModelsSqlserver(db.SQLSERVER);
 
 async function getTotalIncome() {
     try {

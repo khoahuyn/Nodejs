@@ -1,16 +1,16 @@
-var DataTypes = require("sequelize").DataTypes;
-var _BENEFIT_PLANS = require("./BENEFIT_PLANS");
-var _EMPLOYMENT = require("./EMPLOYMENT");
-var _EMPLOYMENT_WORKING_TIME = require("./EMPLOYMENT_WORKING_TIME");
-var _JOB_HISTORY = require("./JOB_HISTORY");
-var _PERSONAL = require("./PERSONAL");
+const DataTypes = require("sequelize").DataTypes;
+const _BENEFIT_PLANS = require("./BENEFIT_PLANS");
+const _EMPLOYMENT = require("./EMPLOYMENT");
+const _EMPLOYMENT_WORKING_TIME = require("./EMPLOYMENT_WORKING_TIME");
+const _JOB_HISTORY = require("./JOB_HISTORY");
+const _PERSONAL = require("./PERSONAL");
 
 function initModelsSqlserver(sequelize) {
-  var BENEFIT_PLANS = _BENEFIT_PLANS(sequelize, DataTypes);
-  var EMPLOYMENT = _EMPLOYMENT(sequelize, DataTypes);
-  var EMPLOYMENT_WORKING_TIME = _EMPLOYMENT_WORKING_TIME(sequelize, DataTypes);
-  var JOB_HISTORY = _JOB_HISTORY(sequelize, DataTypes);
-  var PERSONAL = _PERSONAL(sequelize, DataTypes);
+  const BENEFIT_PLANS = _BENEFIT_PLANS(sequelize, DataTypes);
+  const EMPLOYMENT = _EMPLOYMENT(sequelize, DataTypes);
+  const EMPLOYMENT_WORKING_TIME = _EMPLOYMENT_WORKING_TIME(sequelize, DataTypes);
+  const JOB_HISTORY = _JOB_HISTORY(sequelize, DataTypes);
+  const PERSONAL = _PERSONAL(sequelize, DataTypes);
 
   PERSONAL.belongsTo(BENEFIT_PLANS, { as: "BENEFIT_PLANS", foreignKey: "BENEFIT_PLAN_ID"});
   BENEFIT_PLANS.hasMany(PERSONAL, { as: "PERSONAL", foreignKey: "BENEFIT_PLAN_ID"});

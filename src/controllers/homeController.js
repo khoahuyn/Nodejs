@@ -7,11 +7,11 @@ const { getListEmployee, addNewPersonalData } = require('../services/employeeLis
 
 
 
-let test = async (req, res) => {
+const test = async (req, res) => {
     res.send('hello cac me')
 }
 
-let findAllEmplyee = async (req, res) => {
+const findAllEmplyee = async (req, res) => {
     try {
         // Gọi service để lấy tất cả PayRates
         const result = await getAllEmployees();
@@ -23,7 +23,7 @@ let findAllEmplyee = async (req, res) => {
     }
 }
 
-let findAllPersonal = async (req, res) => {
+const findAllPersonal = async (req, res) => {
     try {
         // Gọi service để lấy tất cả PayRates
         const result = await getAllPersonnal();
@@ -35,7 +35,7 @@ let findAllPersonal = async (req, res) => {
     }
 }
 
-let findTotalIncome = async (req, res) => {
+const findTotalIncome = async (req, res) => {
     try {
         // Gọi service để lấy tất cả PayRates
         const result = await getTotalIncome();
@@ -48,7 +48,7 @@ let findTotalIncome = async (req, res) => {
 }
 
 
-let findTotalVacation = async (req, res) => {
+const findTotalVacation = async (req, res) => {
     try {
         // Gọi service để lấy tất cả PayRates
         const result = await getTotalVacation();
@@ -60,7 +60,7 @@ let findTotalVacation = async (req, res) => {
     }
 }
 
-let findTotalBenefit = async (req, res) => {
+const findTotalBenefit = async (req, res) => {
     try {
         // Gọi service để lấy tất cả PayRates
         const result = await getTotalBenefit();
@@ -72,7 +72,7 @@ let findTotalBenefit = async (req, res) => {
     }
 }
 
-let findAll = async (req, res) => {
+const findAll = async (req, res) => {
     try {
         // Gọi service để lấy tất cả PayRates
         const result = await getListEmployee();
@@ -85,16 +85,16 @@ let findAll = async (req, res) => {
 }
 
 
-let addNewPersonal = async (req, res) => {
+const addNewPersonal = async (req, res) => {
     try {
         const newPersonalData = req.body;
+        const employeeData = req.body;
 
-        const result = await addNewPersonalData(newPersonalData);
+        const result = await addNewPersonalData(newPersonalData, employeeData);
 
         res.json(result);
     } catch (error) {
-        console.error('Error adding new personal data:', error);
-        res.status(500).json({ error: error.message }); 
+        res.status(500).json({ error: error.message });
     }
 };
 
@@ -103,5 +103,5 @@ let addNewPersonal = async (req, res) => {
 
 
 module.exports = {
-    test, findAllPersonal, findAllEmplyee, findTotalIncome, findTotalVacation, findTotalBenefit, findAll,addNewPersonal
+    test, findAllPersonal, findAllEmplyee, findTotalIncome, findTotalVacation, findTotalBenefit, findAll, addNewPersonal
 }
