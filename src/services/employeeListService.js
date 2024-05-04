@@ -19,14 +19,14 @@ async function getListEmployee() {
         const personal = await modelsql.PERSONAL.findAll({
             attributes: ['PERSONAL_ID', 'CURRENT_FIRST_NAME', 'CURRENT_LAST_NAME', 'CURRENT_MIDDLE_NAME', 'CURRENT_GENDER', 'ETHNICITY', 'SHAREHOLDER_STATUS', 'SOCIAL_SECURITY_NUMBER'],
             as: 'PERSONAL',
-            include: [
-                {
-                    model: modelsql.BENEFIT_PLANS,
-                    attributes: ['BENEFIT_PLANS_ID', 'DEDUCTABLE', 'PERCENTAGE_COPAY'],
-                    as: 'BENEFIT_PLANS',
-                },
+            // include: [
+            //     {
+            //         model: modelsql.BENEFIT_PLANS,
+            //         attributes: ['BENEFIT_PLANS_ID', 'DEDUCTABLE', 'PERCENTAGE_COPAY'],
+            //         as: 'BENEFIT_PLANS',
+            //     },
 
-            ]
+            // ]
         })
 
         // const jobHistory = await modelsql.JOB_HISTORY.findAll({
@@ -50,16 +50,17 @@ async function getListEmployee() {
             };
         });
 
+        // BENEFIT_PLANS: { BENEFIT_PLANS_ID, DEDUCTABLE, PERCENTAGE_COPAY, }
         const newData = personal.map(item => {
             const {
                 PERSONAL_ID, CURRENT_FIRST_NAME, CURRENT_LAST_NAME, CURRENT_MIDDLE_NAME,
                 CURRENT_GENDER, ETHNICITY, SHAREHOLDER_STATUS, SOCIAL_SECURITY_NUMBER,
-                BENEFIT_PLANS: { BENEFIT_PLANS_ID, DEDUCTABLE, PERCENTAGE_COPAY, } } = item;
+            } = item;
             const FULLNAME = `${CURRENT_FIRST_NAME} ${CURRENT_MIDDLE_NAME || ''} ${CURRENT_LAST_NAME}`;
             return {
-                // FULLNAME,
                 PERSONAL_ID,
-                BENEFIT_PLANS_ID,
+                FULLNAME,
+                // BENEFIT_PLANS_ID,
                 CURRENT_FIRST_NAME,
                 CURRENT_LAST_NAME,
                 CURRENT_MIDDLE_NAME,
@@ -95,7 +96,7 @@ async function getListEmployee() {
         const mergeData = newData.map((item) => {
             const matchData = data.find((data) => data.idEmployee === item.PERSONAL_ID);
             const mergedItem = { ...item, ...matchData };
-            const { idEmployee, BENEFIT_PLANS_ID, EMPLOYMENT_ID, ...rest } = mergedItem;
+            const { idEmployee, ...rest } = mergedItem;
             return rest;
         })
 
