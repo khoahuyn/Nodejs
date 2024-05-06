@@ -1,5 +1,6 @@
 const express = require('express');
-const { test, findAllEmplyee, findAllPersonal, findTotalIncome, findTotalVacation, findTotalBenefit, findAll, addNewPersonal } = require('../controllers/homeController');
+const { test, findAllEmplyee, findAllPersonal, findTotalIncome, findTotalVacation
+    , findTotalBenefit, findAll, addNewPersonal, findByPK, updatePersonal, deletePersonal } = require('../controllers/homeController');
 const router = express.Router();
 
 router.get('/', test);
@@ -16,7 +17,14 @@ router.get('/benefit', findTotalBenefit);
 
 router.get('/list', findAll);
 
-router.post('/create', addNewPersonal)
+router.get('/:id', findByPK);
+
+router.post('/create', addNewPersonal);
+
+router.put('/update/:id', updatePersonal);
+
+router.delete('/delete/:id', deletePersonal);
+
 
 
 module.exports = router;

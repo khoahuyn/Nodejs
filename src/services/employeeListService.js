@@ -114,9 +114,7 @@ async function getListEmployee() {
 async function addNewPersonalData(data) {
     try {
         const newPersonal = await modelsql.PERSONAL.create(data);
-        if (!newPersonal) {
-            throw new Error('Failed to create new personal data.');
-        }
+
 
         const newEmployee = await models.employee.create({
             ...data,
@@ -126,9 +124,7 @@ async function addNewPersonalData(data) {
             SSN: data.SOCIAL_SECURITY_NUMBER
         });
 
-        if (!newEmployee) {
-            throw new Error('Failed to create new employee data.');
-        }
+
 
         return {
             personal: newPersonal,
@@ -139,6 +135,88 @@ async function addNewPersonalData(data) {
     }
 }
 
+
+async function findById(id) {
+    try {
+        const Personal = await modelsql.PERSONAL.findByPk(id, {
+            attributes: ['PERSONAL_ID', 'CURRENT_FIRST_NAME', 'CURRENT_LAST_NAME', 'CURRENT_MIDDLE_NAME', 'CURRENT_GENDER', 'CURRENT_PERSONAL_EMAIL', 'ETHNICITY', 'SHAREHOLDER_STATUS', 'SOCIAL_SECURITY_NUMBER'],
+        });
+
+        const Employee = await models.employee.findOne({
+            where: { idEmployee: id },
+            attributes: ['idEmployee', 'VacationDays', 'EmployeeNumber', 'PayRates_idPayRates']
+        });
+
+
+        if (!Employee) {
+            throw new Error('Failed to get employee.');
+        }
+
+        return {
+            CURRENT_FIRST_NAME: Personal.CURRENT_FIRST_NAME,
+            CURRENT_LAST_NAME: Personal.CURRENT_LAST_NAME,
+            CURRENT_MIDDLE_NAME: Personal.CURRENT_MIDDLE_NAME,
+            CURRENT_GENDER: Personal.CURRENT_GENDER,
+            CURRENT_PERSONAL_EMAIL: Personal.CURRENT_PERSONAL_EMAIL,
+            ETHNICITY: Personal.ETHNICITY,
+            SHAREHOLDER_STATUS: Personal.SHAREHOLDER_STATUS,
+            SOCIAL_SECURITY_NUMBER: Personal.SOCIAL_SECURITY_NUMBER,
+            VacationDays: Employee.VacationDays,
+            PayRates_idPayRates: Employee.PayRates_idPayRates
+        };
+
+
+    } catch (error) {
+        return error.message
+    }
+}
+
+async function updatePersonalData(data, id) {
+    try {
+        await modelsql.PERSONAL.update(data, {
+            where: { PERSONAL_ID: id },
+        });
+
+
+        await models.employee.update({
+            FirstName: data.CURRENT_FIRST_NAME + " " + data.CURRENT_MIDDLE_NAME,
+            LastName: data.CURRENT_LAST_NAME,
+            SSN: data.SOCIAL_SECURITY_NUMBER,
+            VacationDays: data.VacationDays,
+            PayRates_idPayRates: data.PayRates_idPayRates
+        }, {
+            where: { idEmployee: id },
+        });
+
+
+
+        return { message: 'Personal data create successfully' };
+
+    } catch (error) {
+        return error.message
+    }
+}
+
+async function deletePersonalData(id) {
+    try {
+        await modelsql.PERSONAL.destroy({
+            where: { PERSONAL_ID: id },
+        });
+
+
+        await models.employee.destroy({
+            where: { idEmployee: id },
+        });
+
+
+
+        return { message: 'Personal data deleted successfully' };
+
+    } catch (error) {
+        return error.message
+    }
+}
+
 module.exports = {
-    getListEmployee, addNewPersonalData
+    getListEmployee, addNewPersonalData, findById, updatePersonalData, deletePersonalData
 };
