@@ -4,7 +4,7 @@ module.exports = function(sequelize, DataTypes) {
     EMPLOYMENT_ID: {
       type: DataTypes.DECIMAL(18,0),
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
     },
     EMPLOYMENT_CODE: {
       type: DataTypes.STRING(50),

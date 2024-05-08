@@ -75,10 +75,11 @@ const findAll = async (req, res) => {
 
 const addNewPersonal = async (req, res) => {
     try {
-        const newPersonalData = req.body;
-        const employeeData = req.body;
+        const newPersonal = req.body;
+        const newEmployee = req.body;
+        const newEmployment = req.body;
 
-        const result = await addNewPersonalData(newPersonalData, employeeData);
+        const result = await addNewPersonalData(newPersonal, newEmployee, newEmployment);
 
         res.json(result);
     } catch (error) {
@@ -103,7 +104,7 @@ const findByPK = async (req, res) => {
 const updatePersonal = async (req, res) => {
     try {
         const newPersonalData = req.body;
-        // const employeeData = req.body;
+        
         const _id = req.params.id;
 
         const result = await updatePersonalData(newPersonalData, _id);

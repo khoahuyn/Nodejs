@@ -1,14 +1,14 @@
 const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   return sequelize.define('employee', {
     idEmployee: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
     },
     EmployeeNumber: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
     },
     LastName: {
       type: DataTypes.STRING(45),
@@ -19,7 +19,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     SSN: {
-      type: DataTypes.DECIMAL(10,0),
+      type: DataTypes.DECIMAL(10, 0),
       allowNull: false
     },
     PayRate: {
@@ -40,11 +40,11 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     PaidToDate: {
-      type: DataTypes.DECIMAL(2,0),
+      type: DataTypes.DECIMAL(2, 0),
       allowNull: true
     },
     PaidLastYear: {
-      type: DataTypes.DECIMAL(2,0),
+      type: DataTypes.DECIMAL(2, 0),
       allowNull: true
     }
   }, {
