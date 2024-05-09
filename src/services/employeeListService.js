@@ -6,7 +6,9 @@ const models = initModelsMySQL(db.MYSQL);
 const initModelsSqlserver = require("../models/sqlserver/init-models");
 const modelsql = initModelsSqlserver(db.SQLSERVER);
 
+
 async function getListEmployee() {
+
     try {
 
         const employees = await models.employee.findAll(
@@ -84,7 +86,7 @@ async function getListEmployee() {
 
 
 
-
+        // console.log(lengthData)
         // BENEFIT_PLANS: { BENEFIT_PLANS_ID, DEDUCTABLE, PERCENTAGE_COPAY, }
         // const newData = personal.map(item => {
         //     const {
@@ -134,7 +136,6 @@ async function getListEmployee() {
         // })
 
 
-
         return mergeData;
 
     } catch (error) {
@@ -178,8 +179,11 @@ async function addNewPersonalData(data) {
 
         // autoIncrement: true,
 
+        const employee= await getListEmployee();
+        const lengthData=employee.length;
+        
         const newPersonal = await modelsql.PERSONAL.create({
-            PERSONAL_ID: employeeId,
+            PERSONAL_ID: lengthData + 1,
             CURRENT_FIRST_NAME: firstName,
             CURRENT_LAST_NAME: lastName,
             CURRENT_MIDDLE_NAME: middleName,
@@ -195,8 +199,8 @@ async function addNewPersonalData(data) {
 
 
         const newEmployee = await models.employee.create({
-            idEmployee: employeeId,
-            EmployeeNumber: employeeId,
+            idEmployee: lengthData + 1,
+            EmployeeNumber: lengthData + 1,
             FirstName: firstName + " " + middleName,
             LastName: lastName,
             SSN: ssNumber,
@@ -206,8 +210,8 @@ async function addNewPersonalData(data) {
 
 
         const newEmployment = await modelsql.EMPLOYMENT.create({
-            EMPLOYMENT_ID: employeeId,
-            PERSONAL_ID: employeeId,
+            EMPLOYMENT_ID: lengthData + 1,
+            PERSONAL_ID: lengthData + 1,
             EMPLOYMENT_STATUS: employstatus
         })
 
