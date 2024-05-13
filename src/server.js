@@ -2,6 +2,8 @@
 require('dotenv').config();
 const express = require('express');
 const apiRouter = require('./routes/api');
+const apiAlert = require('./routes/alert');
+
 const cors = require('cors')
 
 
@@ -13,6 +15,8 @@ const hostname = process.env.HOST_NAME;
 
 //Khai báo routes
 app.use('/', apiRouter)
+app.use('/alert', apiAlert)
+
 
 
 app.listen(port, hostname, () => {

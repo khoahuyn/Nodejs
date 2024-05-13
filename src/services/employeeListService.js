@@ -1,4 +1,5 @@
 const db = require('../models/index')
+const { format } = require('date-fns')
 
 const initModelsMySQL = require("../models/mysql/init-models");
 const models = initModelsMySQL(db.MYSQL);
@@ -174,7 +175,7 @@ async function addNewPersonalData(data) {
         const {
             firstName, middleName, lastName, gender, benefitid
             , birthDay, ssNumber, driver, zip, phoneNumber, email, marital, address, country, ethnicity, status, employstatus,
-            prname, vacations, prid, pd, py, ecode, workcode, number
+            prname, vacations, prid, pd, py, ecode, workcode, number, depart
         } = data
 
         const maxIdEmployee = await modelsql.PERSONAL.max('PERSONAL_ID');
@@ -185,6 +186,7 @@ async function addNewPersonalData(data) {
             CURRENT_FIRST_NAME: firstName,
             CURRENT_LAST_NAME: lastName,
             CURRENT_MIDDLE_NAME: middleName,
+            BIRTH_DATE: format(new Date(birthDay), "yyyy-MM-dd"),
             SOCIAL_SECURITY_NUMBER: ssNumber,
             DRIVERS_LICENSE: driver,
             CURRENT_ADDRESS_1: address,
@@ -223,10 +225,17 @@ async function addNewPersonalData(data) {
             NUMBER_DAYS_REQUIREMENT_OF_WORKING_PER_MONTH: number
         })
 
+        const newJobHistory = await modelsql.JOB_HISTORY.create({
+            JOB_HISTORY_ID: maxIdEmployee + 1,
+            EMPLOYMENT_ID: maxIdEmployee + 1,
+            DEPARTMENT: depart
+        })
+
         return {
             personal: newPersonal,
             employee: newEmployee,
-            employment: newEmployment
+            employment: newEmployment,
+            job: newJobHistory
         };
     } catch (error) {
         return error.message
@@ -237,7 +246,7 @@ async function addNewPersonalData(data) {
 async function findById(id) {
     try {
         const Personal = await modelsql.PERSONAL.findByPk(id, {
-            attributes: ['PERSONAL_ID', 'CURRENT_FIRST_NAME', 'CURRENT_LAST_NAME', 'CURRENT_MIDDLE_NAME', 'CURRENT_GENDER'
+            attributes: ['PERSONAL_ID', 'CURRENT_FIRST_NAME', 'CURRENT_LAST_NAME', 'BIRTH_DATE', 'CURRENT_MIDDLE_NAME', 'CURRENT_GENDER'
                 , 'CURRENT_PERSONAL_EMAIL', 'ETHNICITY', 'SHAREHOLDER_STATUS', 'CURRENT_PHONE_NUMBER', 'CURRENT_COUNTRY',
                 'BENEFIT_PLAN_ID', 'SOCIAL_SECURITY_NUMBER', 'DRIVERS_LICENSE', 'CURRENT_ADDRESS_1'
                 , 'CURRENT_ZIP', 'CURRENT_MARITAL_STATUS'],
@@ -257,7 +266,9 @@ async function findById(id) {
         });
 
 
-
+        const JobHistory = await modelsql.JOB_HISTORY.findByPk(id, {
+            attributes: ['DEPARTMENT']
+        });
 
 
 
@@ -266,6 +277,7 @@ async function findById(id) {
             firstName: Personal.CURRENT_FIRST_NAME,
             lastName: Personal.CURRENT_LAST_NAME,
             middleName: Personal.CURRENT_MIDDLE_NAME,
+            birthDay: Personal.BIRTH_DATE,
             driver: Personal.DRIVERS_LICENSE,
             address: Personal.CURRENT_ADDRESS_1,
             country: Personal.CURRENT_COUNTRY,
@@ -274,7 +286,7 @@ async function findById(id) {
             phoneNumber: Personal.CURRENT_PHONE_NUMBER,
             email: Personal.CURRENT_PERSONAL_EMAIL,
             ethnicity: Personal.ETHNICITY,
-            martial: Personal.CURRENT_MARITAL_STATUS,
+            marital: Personal.CURRENT_MARITAL_STATUS,
             status: Personal.SHAREHOLDER_STATUS,
             ssNumber: Personal.SOCIAL_SECURITY_NUMBER,
             prname: Employee.PayRate,
@@ -286,7 +298,8 @@ async function findById(id) {
             ecode: Employement.EMPLOYMENT_CODE,
             workcode: Employement.WORKERS_COMP_CODE,
             benefitid: Personal.BENEFIT_PLAN_ID,
-            employstatus: Employement.EMPLOYMENT_STATUS
+            employstatus: Employement.EMPLOYMENT_STATUS,
+            depart: JobHistory.DEPARTMENT
         };
 
 
@@ -303,7 +316,7 @@ async function updatePersonalData(data, id) {
         const {
             firstName, middleName, lastName, gender, benefitid
             , birthDay, ssNumber, driver, zip, phoneNumber, email, marital, address, country, ethnicity, status, employstatus,
-            prname, vacations, prid, pd, py, ecode, workcode, number
+            prname, vacations, prid, pd, py, ecode, workcode, number, depart
         } = data
 
 
@@ -311,6 +324,7 @@ async function updatePersonalData(data, id) {
             CURRENT_FIRST_NAME: firstName,
             CURRENT_LAST_NAME: lastName,
             CURRENT_MIDDLE_NAME: middleName,
+            BIRTH_DATE: format(new Date(birthDay), "yyyy-MM-dd"),
             SOCIAL_SECURITY_NUMBER: ssNumber,
             DRIVERS_LICENSE: driver,
             CURRENT_ADDRESS_1: address,
@@ -352,6 +366,13 @@ async function updatePersonalData(data, id) {
         });
 
 
+        await modelsql.JOB_HISTORY.update({
+            DEPARTMENT: depart
+        }, {
+            where: { EMPLOYMENT_ID: id },
+        });
+
+
 
         return { message: 'Personal data update successfully' };
 
@@ -375,6 +396,9 @@ async function deletePersonalData(id) {
             where: { EMPLOYMENT_ID: id },
         });
 
+        await modelsql.JOB_HISTORY.destroy({
+            where: { JOB_HISTORY_ID: id },
+        })
 
         return { message: 'Personal data deleted successfully' };
 
