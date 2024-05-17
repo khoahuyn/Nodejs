@@ -1,13 +1,13 @@
 const express = require('express');
-const { test, findAllEmplyee, findAllPersonal, findTotalIncome, findTotalVacation
+const { test, findAllBenefit, findAllPayrate, findTotalIncome, findTotalVacation
     , findTotalBenefit, findAll, addNewPersonal, findByPK, updatePersonal, deletePersonal } = require('../controllers/homeController');
 const router = express.Router();
 
 router.get('/', test);
 
-router.get('/employee', findAllEmplyee);
+router.get('/idbenefit', findAllBenefit);
 
-router.get('/personal', findAllPersonal);
+router.get('/idpayrates', findAllPayrate);
 
 router.get('/total', findTotalIncome);
 

@@ -53,7 +53,7 @@ async function getTotalBenefit() {
                 SHAREHOLDER_STATUS,
                 CURRENT_GENDER,
                 ETHNICITY,
-                FROFIT: DEDUCTABLE * PERCENTAGE_COPAY
+                FROFIT: DEDUCTABLE - (PERCENTAGE_COPAY * DEDUCTABLE) / 100
             };
         });
 

@@ -15,7 +15,7 @@ async function getTotalIncome() {
                 include: [
                     {
                         model: models.payrates,
-                        attributes: ['idPayRates', 'Value', 'TaxPercentage'],
+                        attributes: ['idPayRates', 'PayAmount', 'TaxPercentage'],
                         as: 'payrates'
                     }
                 ]
@@ -43,10 +43,10 @@ async function getTotalIncome() {
 
 
         const data = employees.map(item => {
-            const { idEmployee, payrates: { Value, TaxPercentage } } = item;
+            const { idEmployee, payrates: { PayAmount, TaxPercentage } } = item;
             return {
                 idEmployee,
-                SALARY: Value * (100 - TaxPercentage) / 100,
+                SALARY: PayAmount * (TaxPercentage * 100),
             };
         });
 

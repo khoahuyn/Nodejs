@@ -1,5 +1,4 @@
-const { getAllEmployees } = require('../services/employeeService');
-const { getAllPersonnal } = require('../services/personService');
+const { getAllBenefit, getAllPayRate } = require('../services/getIDService');
 const { getTotalIncome } = require('../services/totalService');
 const { getTotalVacation } = require('../services/vacationService');
 const { getTotalBenefit } = require('../services/benefitService');
@@ -11,9 +10,11 @@ const test = async (req, res) => {
     res.send('hello cac me')
 }
 
-const findAllEmplyee = async (req, res) => {
+
+
+const findAllBenefit = async (req, res) => {
     try {
-        const result = await getAllEmployees();
+        const result = await getAllBenefit();
 
         res.json(result);
     } catch (error) {
@@ -21,9 +22,9 @@ const findAllEmplyee = async (req, res) => {
     }
 }
 
-const findAllPersonal = async (req, res) => {
+const findAllPayrate = async (req, res) => {
     try {
-        const result = await getAllPersonnal();
+        const result = await getAllPayRate();
 
         res.json(result);
     } catch (error) {
@@ -135,7 +136,7 @@ const deletePersonal = async (req, res) => {
 
 
 module.exports = {
-    test, findAllPersonal, findAllEmplyee, findTotalIncome,
+    test, findAllBenefit, findAllPayrate, findTotalIncome,
     findTotalVacation, findTotalBenefit, findAll, addNewPersonal,
     findByPK, updatePersonal, deletePersonal
 }
