@@ -52,7 +52,10 @@ async function getListAnniversary() {
             const diffTime = Math.abs(hireDateThisYear - today);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-            return diffDays <= thresholdDays;
+            const oneYearInMilliseconds = 365 * 24 * 60 * 60 * 1000;
+            const workingTime = today.getTime() - hireDate.getTime();
+
+            return diffDays <= thresholdDays && workingTime >= oneYearInMilliseconds;
         });
 
         return anniversaryRemainder;
