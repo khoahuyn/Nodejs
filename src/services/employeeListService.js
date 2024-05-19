@@ -148,7 +148,7 @@ async function addNewPersonalData(data) {
         const {
             firstName, middleName, lastName, gender, benefitid
             , birthDay, ssNumber, driver, zip, phoneNumber, email, marital, address, address2, country, ethnicity, status, employstatus,
-            prname, vacations, prid, pd, py, ecode, workcode, number, depart, hireDate, terminationDate
+            prname, vacations, prid, pd, py, ecode, workcode, number, depart, hireDate, terminationDate, month, totalnumber
         } = data
 
         const maxIdEmployee = await modelsql.PERSONAL.max('PERSONAL_ID');
@@ -210,11 +210,21 @@ async function addNewPersonalData(data) {
             DEPARTMENT: depart
         })
 
+        const newEmployment_WorkingTime = await modelsql.EMPLOYMENT_WORKING_TIME.create({
+            EMPLOYMENT_WORKING_TIME_ID: maxIdEmployee + 1,
+            EMPLOYMENT_ID: maxIdEmployee + 1,
+            YEAR_WORKING: format("2024-02-04", "yyyy-MM-dd"),
+            MONTH_WORKING: month,
+            TOTAL_NUMBER_VACATION_WORKING_DAYS_PER_MONTH: totalnumber
+        })
+
+
         return {
             personal: newPersonal,
             employee: newEmployee,
             employment: newEmployment,
-            job: newJobHistory
+            job: newJobHistory,
+            working: newEmployment_WorkingTime
         };
     } catch (error) {
         return error.message
@@ -249,6 +259,11 @@ async function findById(id) {
             attributes: ['DEPARTMENT']
         });
 
+        const Employment_WorkingTime = await modelsql.EMPLOYMENT_WORKING_TIME.findByPk(id, {
+            attributes: ['MONTH_WORKING', 'TOTAL_NUMBER_VACATION_WORKING_DAYS_PER_MONTH']
+        });
+
+
 
 
 
@@ -282,6 +297,8 @@ async function findById(id) {
             hireDate: Employement.HIRE_DATE_FOR_WORKING,
             terminationDate: Employement.TERMINATION_DATE,
             depart: JobHistory.DEPARTMENT,
+            month: Employment_WorkingTime.MONTH_WORKING,
+            totalnumber: Employment_WorkingTime.TOTAL_NUMBER_VACATION_WORKING_DAYS_PER_MONTH
         };
 
 
@@ -298,7 +315,7 @@ async function updatePersonalData(data, id) {
         const {
             firstName, middleName, lastName, gender, benefitid
             , birthDay, ssNumber, driver, zip, phoneNumber, email, marital, address, address2, country, ethnicity, status, employstatus,
-            prname, vacations, prid, pd, py, ecode, workcode, number, depart, hireDate, terminationDate
+            prname, vacations, prid, pd, py, ecode, workcode, number, depart, hireDate, terminationDate, month, totalnumber
         } = data
 
 
@@ -355,8 +372,16 @@ async function updatePersonalData(data, id) {
         await modelsql.JOB_HISTORY.update({
             DEPARTMENT: depart
         }, {
-            where: { EMPLOYMENT_ID: id },
+            where: { JOB_HISTORY_ID: id },
         });
+
+
+        await modelsql.EMPLOYMENT_WORKING_TIME.update({
+            MONTH_WORKING: month,
+            TOTAL_NUMBER_VACATION_WORKING_DAYS_PER_MONTH: totalnumber
+        }, {
+            where: { EMPLOYMENT_WORKING_TIME_ID: id },
+        })
 
 
 
@@ -384,6 +409,10 @@ async function deletePersonalData(id) {
 
         await modelsql.JOB_HISTORY.destroy({
             where: { JOB_HISTORY_ID: id },
+        })
+
+        await modelsql.EMPLOYMENT_WORKING_TIME.destroy({
+            where: { EMPLOYMENT_WORKING_TIME_ID: id },
         })
 
         return { message: 'Personal data deleted successfully' };

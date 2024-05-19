@@ -76,7 +76,7 @@ async function getListVacationDay() {
                         {
                             model: modelsql.EMPLOYMENT_WORKING_TIME,
                             as: "EMPLOYMENT_WORKING_TIME",
-                            attributes: ["YEAR_WORKING", "MONTH_WORKING", "NUMBER_DAYS_ACTUAL_OF_WORKING_PER_MONTH", "TOTAL_NUMBER_VACATION_WORKING_DAYS_PER_MONTH"],
+                            attributes: ["YEAR_WORKING", "MONTH_WORKING", "TOTAL_NUMBER_VACATION_WORKING_DAYS_PER_MONTH"],
                             where: {
                                 $and: Sequelize.where(Sequelize.fn('YEAR', Sequelize.col('YEAR_WORKING')), new Date().getFullYear()),
                             }
