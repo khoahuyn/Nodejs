@@ -3,29 +3,36 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('PayRates', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
       idPayRates: {
-        type: Sequelize.INTEGER
+        allowNull: false,
+        primaryKey: true,
+        type: Sequelize.INTEGER,
       },
-      PayRatesName: {
+      PayRatesName:{
+        allowNull: false,
         type: Sequelize.STRING
       },
-      Value: {
+      Value:{
+        allowNull: false,
         type: Sequelize.DOUBLE
       },
-      createdAt: {
+      TaxPercentage:{
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DOUBLE
       },
-      updatedAt: {
+      PayType:{
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.INTEGER
+      },
+      PayAmount:{
+        allowNull: false,
+        type: Sequelize.DOUBLE
+      },
+      PT_LevelC:{
+        allowNull: false,
+        type: Sequelize.DOUBLE
       }
+  
     });
   },
   async down(queryInterface, Sequelize) {

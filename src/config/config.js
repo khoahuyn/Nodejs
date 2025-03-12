@@ -1,11 +1,13 @@
-{
+require('dotenv').config();
+const config = {
   "development": {
-    "username": "root",
-    "password": "123456",
+    "username": process.env.MSQL_NAME,
+    "password": process.env.MSQL_PASSWORD,
     "database": "payroll",
-    "host": "127.0.0.1",
-    "port": "5555",
-    "dialect": "mysql"
+    "host": process.env.MSQL_HOST,
+    "port": process.env.MSQL_PORT,
+    "dialect": "mysql",
+    "logging": false
   },
   "test": {
     "username": "root",
@@ -22,3 +24,5 @@
     "dialect": "mysql"
   }
 }
+
+module.exports = config

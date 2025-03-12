@@ -14,9 +14,52 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   PayRates.init({
-    idPayRates: DataTypes.INTEGER,
-    PayRatesName: DataTypes.STRING,
-    Value: DataTypes.DOUBLE
+    idEmployee: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+    },
+    EmployeeNumber: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      unique: true, 
+    },
+    LastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    FirstName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    SSN: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    PayRate: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    VacationDays: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    PaidToDate: {
+      type: DataTypes.DOUBLE,
+      allowNull: false,
+    },
+    PaidLastYear: {
+      type: DataTypes.DOUBLE,
+      allowNull: false,
+    },
+    PayRates_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'PayRates', 
+        key: 'idPayRates', 
+      },
+    },
   }, {
     sequelize,
     modelName: 'PayRates',
